@@ -1,21 +1,35 @@
 import React from "react";
-import { ScProduct } from "./scParts";
+import styled from "styled-components";
 
-const Product = (props) => {
+// Components
+import Product from "./Product";
+
+import { useContext } from "react";
+import { ProductContext } from "../contexts/ProductContext";
+
+const ScProducts = styled.section`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(1, 1fr);
+
+    img {
+      width: 100%;
+    }
+  }
+`;
+
+const Products = () => {
+  const { products, addItem } = useContext(ProductContext);
   return (
-    <ScProduct>
-      <img src={props.product.image} alt={`${props.product.title} book`} />
-      <div className="details">
-        <h1 className="title">{props.product.title}</h1>
-        <div className="footer">
-          <p className="price">${props.product.price}</p>
-          <button onClick={() => props.addItem(props.product)}>
-            Add to cart
-          </button>
-        </div>
-      </div>
-    </ScProduct>
+    <ScProducts>
+      {products.map(product => (
+        <Product key={product.id} product={product} addItem={addItem} />
+      ))}
+    </ScProducts>
   );
 };
 
-export default Product;
+export default Products;
